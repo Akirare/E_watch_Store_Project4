@@ -1,2 +1,2 @@
 # E_watch_Store
-A website which is specialized in watch
+An online web application about watchs
