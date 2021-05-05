@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>order product</title>
+        <link rel="stylesheet" href="./resources/css/bootstrap.min.css"/>
+        <script src="./resources/js/jquery.min.js"></script>
+        <script src="./resources/js/bootstrap.min.js"></script>
+        <link href="resources/css/style_ew.css" rel="stylesheet" type="text/css"/> <!--include footer-->
+        <link href="resources/css/style_ew2.css" rel="stylesheet" type="text/css"/> <!--include footer-->
+        <style>
+            div{
+                /*border: 1px solid #0050d7;*/
+            }
+
+
+            .cartTable {   
+                border-collapse:collapse;
+                border:1px solid lavender;
+            }
+            .cartTableHeader {
+                text-align:center;
+                background:none repeat scroll 0 0 #001B39;
+                color: white;
+                border-bottom:1px solid #A0A0A0;  
+                padding: 25px;
+            }
+            .cartTableOddRow {
+                text-align:center;
+                background:none repeat scroll 0 0 #ffffff;	
+            }
+
+            .cartTableEvenRow {
+                text-align:center;
+                background:none repeat scroll 0 0 #F2F5F9;
+            }
+        </style>
+        <h:outputScript name="bill.js" library="js"/>
+    </h:head>
+    <h:body>
+        <div class="container-fluid">
+            <ui:insert name="header">
+                <ui:include src="templates/header.xhtml" />
+            </ui:insert>
+        </div>
+
+        <div class="container">
+            <div class="row" style="text-align: center; line-height: 2.43">
+                <div class="col-md-12" style="font-size: 2em; font-weight: bold;">E-Watch Bill for customer</div>
+            </div>
+            <hr/><br/>
+            <div colspan="2" class="col-md-6" style="text-align: right; line-height: 2.43">Payment</div>
+            <div class="col-md-3" style="text-align: left;">
+                <select name="PaymentId" id="PaymentId" class="form-control">
+                    <c:forEach begin="1" end="1">
+                        <option value="PaymentId">Cash on destination</option>
+                        <option value="PaymentId">Via Online Banking</option>
+                    </c:forEach>
+                </select>
+
+            </div>
+
+        </div>
+        <br />
+        <div class="container">
+            <div colspan="2" class="col-md-6" style="text-align: right; line-height: 2.43">Place of Delivery</div>
+            <div class="col-md-6" style="text-align: left;">
+                <input type="text" name="PlaceOfDelivery" id="PlaceOfDelivery" class="form-control" />
+            </div>
+        </div>
+
+        <br/>
+        <div class="container">
+            <div class="row">
+                <f:view>
+                    <h:form>
+                        <h:dataTable value="#{productManagedBean.product}" var="p" styleClass="table" border="1">
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Name of Product"/>
+                                </f:facet>
+                                <h:outputText value="#{productManagedBean.product.productName}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Price"/>
+                                </f:facet>
+                                <h:outputText value="$ #{productManagedBean.product.unitPrice}"/>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Quantity"/>
+                                </f:facet>
+                                <h:panelGrid>
+                                    <p:spinner value="#{productManagedBean.orderdetail.quantity}" min="0"  max="99"
+                                               id="nquantity" style="border: none; margin: 0px;">
+                                        <f:ajax event="change" listener="#{productManagedBean.muti()}" render="total"/>
+                                    </p:spinner>
+                                </h:panelGrid>
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="   Amout   "/>
+                                </f:facet>
+                                <h:outputText id="total" value="$ #{productManagedBean.total}"/>
+                            </h:column>
+                        </h:dataTable>
+                        
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6" style="text-align: right; margin-top: 2px; line-height: 2.43">
+                                    
+                                </div>
+                                <div class="col-md-6 col-lg-6">
+                                    <div class="row">
+                                        <div class="col-md-6" style="margin-bottom: 8px;">
+                                            <h:commandButton value="Confirm" action="#{productManagedBean.orderProductCreate()}" styleClass="btn btn-block btn-primary"/>
+                                        </div>
+                                        <div class="col-md-6" style="margin-bottom: 8px;">
+                                            <a href="home.xhtml" class="btn btn-block btn-default">Cancel</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </h:form>
+                </f:view>
+            </div>
+        </div>
+        <!--Bill End-->
+
+
+
+
+        
+
+        <!--Footer-->
+        <br/><br/>
+        <div class="container-fluid">
+            <ui:insert name="footer">
+                <ui:include src="templates/footer.xhtml" />
+            </ui:insert>
+        </div>
+    </h:body>
+</html>
+

@@ -1,0 +1,161 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Backend - Order</title>
+        <meta charset="utf-8" />
+        <meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="apple-touch-icon" sizes="76x76" href="resources/adminMainPageResource/img/apple-icon.png" />
+        <link rel="icon" type="image/png" href="resources/adminMainPageResource/img/favicon.png" />
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
+        <link rel="stylesheet" type="text/css" href="resources/adminMainPageResource/css/bootstrap.min.css" />
+        <link rel="stylesheet" type="text/css" href="resources/adminMainPageResource/css/now-ui-dashboard.css" />
+    </h:head>
+    <h:body>
+        <ui:decorate template="layouts/adminTemplate.xhtml">
+            <ui:define name="OrderList">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h:form id="orderForm">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-8 pr-1"><Br/></div>
+                                        <div class="col-md-4 pr-1">
+                                            <div class="form-group">
+                                                <label>Order Status</label>
+                                                <br />      
+                                                <h:selectOneMenu id="option" value="#{OrderController.currentStatus}" 
+                                                                 style=" width: 170px; height: 30px;" onchange = "submit()">
+                                                    <f:valueChangeListener type = "Controller.OrderController" />
+                                                    <f:selectItem itemLabel="All" itemValue="All"/>
+                                                    <f:selectItem itemLabel="Pending..." itemValue="Pending..."/>
+                                                    <f:selectItem itemLabel="Delivered" itemValue="Delivered"/>
+                                                    <f:selectItem itemLabel="Being Delivered" itemValue="Being Delivered"/>
+                                                    <f:selectItem itemLabel="Canceled" itemValue="Cancel"/>
+                                                </h:selectOneMenu>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h:dataTable value="#{OrderController.findAll()}" var="currentOrder" class="table text-center">
+                                <h:column>
+                                    <h:form id="form">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h4 class="card-title">Order ID : #{currentOrder.orderId}</h4>
+                                        </div>     
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <div class="row">
+                                                    <div class="col-md-4 pr-1">
+                                                        <div class="form-group">
+                                                            <label>Order Account</label>
+                                                            <h:inputText id="orderAccount" class="form-control" disabled="true" value="#{OrderController.convertCustomerIdToCustomerName(currentOrder.customerId)}"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 pr-1">
+                                                        <div class="form-group">
+                                                            <label>Order Date</label>
+                                                            <h:inputText id="orderDate" class="form-control" disabled="true" value="#{currentOrder.orderDate}"/>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4 pr-1">
+                                                        <div class="form-group">
+                                                            <label>Status</label>
+                                                            <h:inputText id="orderStatus" class="form-control" disabled="true" value="#{currentOrder.orderStatus}"/>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 pr-1">
+                                                        <h:form id="orderDetailsForm">
+                                                            <h:dataTable value="#{currentOrder.orderdetailsList}" var="currentOrderDetails" class="table text-center">
+                                                                <h:column>
+                                                                    <f:facet name="header" >Details ID</f:facet>
+                                                                    #{currentOrderDetails.id}
+                                                                </h:column>
+                                                                <h:column>
+                                                                    <f:facet name="header" >Product Name</f:facet>
+                                                                    #{OrderController.convertProductIdToProductName(currentOrderDetails.productId)}
+                                                                </h:column>
+                                                                <h:column>
+                                                                    <f:facet name="header" >Quantity</f:facet>
+                                                                    #{currentOrderDetails.unitPrice}
+                                                                </h:column>
+                                                                <h:column>
+                                                                    <f:facet name="header" >Price</f:facet>
+                                                                    #{currentOrderDetails.unitPrice}
+                                                                </h:column>
+                                                            </h:dataTable>
+                                                        </h:form>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 pr-1">
+                                                        <div class="form-group">
+                                                            <label>Description</label>
+                                                            <h:inputTextarea id="orderDescription" class="form-control" disabled="false" value="#{currentOrder.description}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6 pr-1">
+                                                        <div class="form-group">
+                                                            <label>Delivery Date</label>
+                                                            <h:inputText id = "deliveryDate" class="form-control" disabled="true" value = "#{currentOrder.deliveryDate}" >
+                                                                <f:convertDateTime pattern="yyyy-MM-dd"/>  
+                                                             </h:inputText>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 pr-1">
+                                                        <div class="form-group">
+                                                            <label>Expected Delivery Date (YYYY - MM - DD)</label>
+                                                            <h:inputText id = "expectedDeliveryDate" class="form-control" disabled="false" value = "#{OrderController.expectedDeliveryDate}" >
+                                                                <f:convertDateTime pattern="yyyy-MM-dd"/>  
+                                                             </h:inputText>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 pr-1">
+                                                        <div class="form-group">
+                                                            <label>Methods</label>
+                                                            <br/>
+                                                            <p:commandButton value="Approval Order" action="#{OrderController.approvalOrder( currentOrder )}" style="margin-right: 10px;"/>
+                                                            <p:commandButton value="Cancel Order" action="#{OrderController.cancelOrder( currentOrder )}" style="margin-right: 10px;" />
+                                                            <p:commandButton value="Deviveried" action="#{OrderController.deliveried( currentOrder )}" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    </h:form>
+                                </h:column>
+                            </h:dataTable>
+                        </h:form>
+                    </div>
+                </div>
+            </ui:define>
+        </ui:decorate>
+        <!--   Core JS Files   -->
+        <script src="resources/adminMainPageResource/js/core/jquery.min.js"></script>
+        <script src="resources/adminMainPageResource/js/core/popper.min.js"></script>
+        <script src="resources/adminMainPageResource/js/core/bootstrap.min.js"></script>
+        <script src="resources/adminMainPageResource/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+        <!--  Notifications Plugin    -->
+        <script src="resources/adminMainPageResource/js/plugins/bootstrap-notify.js"></script>
+        <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
+        <script src="resources/adminMainPageResource/js/now-ui-dashboard.js" type="text/javascript"></script>
+        <script src="resources/adminMainPageResource/demo/demo.js"></script>
+    </h:body>
+</html>
+

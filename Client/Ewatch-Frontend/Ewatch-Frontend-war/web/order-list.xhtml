@@ -1,0 +1,153 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Order list</title>
+        <link rel="stylesheet" href="./resources/css/bootstrap.min.css"/>
+        <script src="./resources/js/jquery.min.js"></script>
+        <script src="./resources/js/bootstrap.min.js"></script>
+        <link href="resources/css/style_ew.css" rel="stylesheet" type="text/css"/> <!--include footer-->
+        <link href="resources/css/style_ew2.css" rel="stylesheet" type="text/css"/> <!--include footer-->
+        <style>
+            .htb{
+                padding-top: 5px;
+                padding-bottom: 5px;
+                background-color: #3F637D;
+                color: white;
+            }
+            .column1, .column2, .column3, .column4{
+                padding-left: 5px;
+                padding-right: 5px;
+            }
+            .col1, .col2, .col3, .col4{
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+            
+            .col1{
+                width: 150px;
+            }
+            .col2, .col3, .col4{
+                width: 80px;
+            }
+        </style>
+    </h:head>
+    <h:body>
+
+        <div class="container-fluid">
+            <ui:insert name="header">
+                <ui:include src="templates/header.xhtml" />
+            </ui:insert>
+        </div>
+
+
+        <div class="container">
+            <div class="container-fluid">
+                <div class="row">
+
+                    <!--order-->
+                    <div class="col-md-5">
+                        <h:form>
+                            <h4><h:outputText value="CustomerID: #{customerManagedBean.customer.customerId}"/></h4>
+                            <h4><u><h:outputText value="Orders List"/></u></h4>
+                            <h:dataTable value="#{orderManagedBean.findByCustomerId()}" var="item"                                         
+                                         columnClasses="column1,column2,column3,column4"
+                                         cellpadding="1" cellspacing="0" border="1">
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                    <h:commandButton value="Order No. #{item.orderId}" action="#{orderManagedBean.showDetailLocal(item)}" class="btn btn-block btn-sm btn-primary" style="margin-top: 3px;"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.orderDate}">
+                                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                                    </h:outputText>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value=""/>
+                                    </f:facet>
+                                    <h:outputText value="Status: #{item.orderStatus}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <!--<h:outputText value="Action"/>-->
+                                    </f:facet>
+                                    <div style="padding: 5px 10px;">
+                                        <h:commandButton value="Cancel this Order" action="#{orderManagedBean.cancelOrder(item)}" class="btn btn-block btn-sm btn-default"/>
+                                    </div>
+                                </h:column>
+                            </h:dataTable>
+                        </h:form>
+                    </div>
+                    <div class="col-md-1" style="margin-top: 8px;"></div>
+                    <!--order detail-->
+                    <div class="col-md-6" style="margin-top: 8px;">
+                        <br/>
+                        <h4><u><h:outputText value="Detail of orders"/></u></h4>
+
+                        <c:if test="#{orderdetailController.findByOrderId()!=null}">
+
+                            <h:form style="margin-top: 10px;">
+
+                                <h:dataTable value="#{orderdetailController.findByOrderId()}" var="item"
+                                             headerClass="htb"
+                                             columnClasses="col1,col2,col3,col4"
+                                             cellpadding="1" cellspacing="0" border="1">
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <center><h:outputText value="Product name"/></center>
+                                            </f:facet>
+                                        <h:outputText value="#{item.productId.productName}"/>
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <center><h:outputText value="Quantity"/></center>
+                                        </f:facet>
+                                        <h:outputText value="#{item.quantity}"/>
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <center><h:outputText value="UnitPrice"/></center>
+                                        </f:facet>
+                                        <h:outputText value="#{item.unitPrice}"/>
+                                    </h:column>
+                                    <h:column>
+                                        <f:facet name="header">
+                                            <center><h:outputText value="Amout"/></center>
+                                        </f:facet>
+                                        <h:outputText value="#{item.quantity * item.unitPrice}"/>
+                                    </h:column>
+
+
+                                </h:dataTable>
+                            </h:form>
+
+                        </c:if>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!--Footer-->
+        <br/><br/>
+        <div class="container-fluid">
+            <ui:insert name="footer">
+                <ui:include src="templates/footer.xhtml" />
+            </ui:insert>
+        </div>
+    </h:body>
+</html>
+

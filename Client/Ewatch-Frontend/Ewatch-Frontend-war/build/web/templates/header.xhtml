@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions" xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Header</title>
+        <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+        <!--        <link href="resources/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+                <script src="resources/js/jquery.min.js"></script>
+                <script src="resources/js/bootstrap.min.js"></script>-->
+
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>                        
+                        </button>
+                        <!--<a class="navbar-brand" href="home.xhtml">e-Watch</a>-->
+                        <h:link class="navbar-brand" value="e-Watch" outcome="home"/>
+                    </div>
+                    <div class="collapse navbar-collapse" id="myNavbar">
+                        <ul class="nav navbar-nav">
+                            <li class="active">
+                            <h:link value="Home" outcome="home"/>
+                            </li>
+                            <!--Doi ten class dong ben duoi do css conflit-->
+                            <li class="dropdown1">
+                                <a href="product-detail.xhtml" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="product.xhtml">Watches for Men</a></li>
+                                    <li><a href="#">Watches for Women</a></li>
+                                    <li><a href="#">Watches for Kids</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">Luxury Watchs</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <c:if test="#{sessionScope.customerId != null}">
+                                        <li>
+                                        <h:link value="Check cart" outcome="cart-list"/>
+                                        <!--<a href="cart-list.xhtml">Check cart</a>-->
+                                        </li>
+                                        <li>
+                                        <h:link value="Order list" outcome="order-list"/>
+                                        <!--<a href="order-list.xhtml">Order list</a>-->
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                    </c:if>
+
+                                    <li><a href="#">Others</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                            <h:link value="About us" outcome="about"/>
+                            </li>
+                            <li>
+                            <h:link value="Contact us" outcome="contact"/>
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <c:if test="#{sessionScope.customerId == null}">
+                                <li>
+                                    <a href="faces/login.xhtml">
+                                        <span class="glyphicon glyphicon-log-in"></span> Login
+                                    </a>
+                                </li>
+                            </c:if>
+                            <c:if test="#{sessionScope.customerId != null}">
+                                <li>
+                                    <h:link value="" outcome="cart-list">
+                                        <img src="vendors/img/logos/cart-1.png" alt=""/>
+                                        <span class="badge text-white"  style="background: rgb(220, 53, 69); margin-top: -20px;">#{cartManagedBean.findByCustomerId().size()}</span>
+                                    </h:link>
+<!--                                    <a href="cart-list.xhtml">
+                                        <img src="vendors/img/logos/cart-1.png" alt=""/>
+                                        <span class="badge text-white"  style="background: rgb(220, 53, 69); margin-top: -20px;">{cartManagedBean.findByCustomerId().size()}</span>
+                                    </a>-->
+                                </li>
+                                <li><a href="#">
+                                        <span class="glyphicon glyphicon-user"></span>
+                                        <!--{sessionScope.customerId}-->
+                                    </a>
+                                </li>
+                                <li>
+                                    <div style="padding-top: 15px; padding-bottom: 15px;">
+                                        <f:view>
+                                            <h:form>
+                                                <h:commandLink class="l_out" action="#{customerManagedBean.logout()}" value="Log out"/>
+                                            </h:form>
+                                        </f:view>
+                                    </div>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </ui:composition>
+    </h:body>
+</html>
+

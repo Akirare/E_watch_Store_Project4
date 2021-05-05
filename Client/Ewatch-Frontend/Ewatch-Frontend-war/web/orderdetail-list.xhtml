@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Order detail</title>
+    </h:head>
+    <h:body>
+        <div class="col-md-6">
+                        <h:form>
+                            <h3><h:outputText value="Orderdetail List"/></h3>
+                            <!--value="{orderdetailController.findByOrderId()}"-->
+                            <h:dataTable value="#{orderdetailController.findByOrderId()}" var="item">
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Id"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.id}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Quantity"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.quantity}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="UnitPrice"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.unitPrice}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="OrderId"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.orderId.orderId}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="ProductId"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.productId.productId}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="ProductName"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.productId.productName}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Action"/>
+                                    </f:facet>
+                                    <div style="padding: 5px 10px;">
+                                        <h:commandButton value="Delete" action="#{orderdetailController.delete(item)}" class="btn btn-block btn-sm btn-danger"/>
+                                    </div>
+                                </h:column>
+                                
+                            </h:dataTable>
+                            <h:commandButton value="Detail" action="#{orderdetailController.test()}" class="btn btn-block btn-sm btn-danger"/>
+                        </h:form>
+                    </div>
+        
+    </h:body>
+</html>
+
